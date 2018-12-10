@@ -22,8 +22,10 @@ public class RedisQueryParser extends QParser {
 
     @Override
     public Query parse() throws SyntaxError {
-
-        Object text[] = jedis.zrevrange("ratings", 0, 10).toArray();
+        int start = Integer.parseInt(localParams.get("range_start"));
+        int end = Integer.parseInt(localParams.get("range_end"));
+        String key = localParams.get("key");
+        Object text[] = jedis.zrevrange(key, start, end).toArray();
         jedis.close();
 
         BooleanQuery.Builder booleanQueryBuilder = new BooleanQuery.Builder();
