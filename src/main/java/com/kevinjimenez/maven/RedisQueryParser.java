@@ -2,10 +2,7 @@ package com.kevinjimenez.maven;
 
 
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TermRangeQuery;
+import org.apache.lucene.search.*;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.search.QParser;
@@ -25,16 +22,16 @@ public class RedisQueryParser extends QParser {
 
     @Override
     public Query parse() throws SyntaxError {
-        try{
-            Object text[] = jedis.zrevrange("ratings", 0, 10).toArray();
-        }catch (Exception e){
 
-        }finally {
-            jedis.close();
-        }
+        Object text[] = jedis.zrevrange("ratings", 0, 10).toArray();
+        jedis.close();
+
         BooleanQuery.Builder booleanQueryBuilder = new BooleanQuery.Builder();
-        
-        Query q = new TermQuery(new Term("id", "1"));
+        for (Object o: text) {
+            String id = o.toString();
+            booleanQueryBuilder.add(new TermQuery(new Term("id", id)), BooleanClause.Occur.SHOULD);
+        }
+        Query q = booleanQueryBuilder.build();
         return q;
     }
 }
