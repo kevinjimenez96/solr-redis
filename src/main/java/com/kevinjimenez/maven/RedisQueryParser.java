@@ -2,6 +2,7 @@ package com.kevinjimenez.maven;
 
 
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
@@ -25,13 +26,14 @@ public class RedisQueryParser extends QParser {
     @Override
     public Query parse() throws SyntaxError {
         try{
-            String text = jedis.zrange("ratings", 0, 10).toString();
-            Files.write(Paths.get("/home/kevin/fileName.txt"), text.getBytes());
+            Object text[] = jedis.zrevrange("ratings", 0, 10).toArray();
         }catch (Exception e){
 
         }finally {
             jedis.close();
         }
+        BooleanQuery.Builder booleanQueryBuilder = new BooleanQuery.Builder();
+        
         Query q = new TermQuery(new Term("id", "1"));
         return q;
     }
