@@ -29,7 +29,7 @@ public class RedisQueryParserPlugin extends QParserPlugin{
 
         try{
             String text = args.toString();
-            Files.write(Paths.get("/home/kevin/fileName1.txt"), text.getBytes());
+            Files.write(Paths.get("/home/achacon/fileName1.txt"), text.getBytes());
         }catch (Exception e){
 
         }
