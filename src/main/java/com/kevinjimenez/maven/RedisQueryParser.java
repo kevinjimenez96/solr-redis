@@ -1,7 +1,9 @@
 package com.kevinjimenez.maven;
 
 
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.request.SolrQueryRequest;
@@ -30,6 +32,7 @@ public class RedisQueryParser extends QParser {
         }finally {
             jedis.close();
         }
-        return new TermRangeQuery("rating", "4", "5");
+        Query q = new TermQuery(new Term("id", "1"));
+        return q;
     }
 }
